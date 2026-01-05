@@ -1,72 +1,131 @@
 ---
 name: mobile-patterns
-description: Cross-platform mobile development patterns for React Native and Flutter.
+description: Cross-platform mobile development principles. State management, navigation, performance patterns.
 ---
 
 # Mobile Patterns
 
-## React Native Patterns
+> Core mobile development principles for React Native and Flutter.
 
-### React 19 Actions in RN
-```tsx
-function SearchScreen() {
-  const [error, submitAction, isPending] = useActionState(async (prev, formData) => {
-    return await searchAPI(formData.get('query'));
-  }, null);
+---
 
-  return (
-    <View>
-      <TextInput name="query" />
-      <Button onPress={submitAction} title="Search" disabled={isPending} />
-    </View>
-  );
-}
-```
+## 1. State Management Selection
 
-### React Server Components (Expo RSC)
-```tsx
-// server-component.tsx
-export default async function DataList() {
-  const data = await db.query('SELECT * FROM items'); // Direct DB access!
-  return <View>{data.map(item => <Text>{item.name}</Text>)}</View>;
-}
-```
+### By App Complexity
 
-### Navigation
-```tsx
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+| Complexity | React Native | Flutter |
+|------------|-------------|---------|
+| Simple | Zustand | Provider |
+| Medium | React Query + Zustand | Riverpod |
+| Complex | Redux Toolkit | BLoC |
 
-const Stack = createStackNavigator();
+### Principles
 
-function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
-```
+- Server state ≠ UI state (separate them)
+- Minimize global state
+- Colocate state with components when possible
+- Use reactivity, not manual updates
 
-## Flutter Patterns (2025)
+---
 
-### Impeller & Dart 3 Patterns
-```dart
-// Destructuring with patterns
-var (name, age) = ('Mehmet', 25);
+## 2. Navigation Principles
 
-// Impeller-ready Graphics
-CustomPaint(
-  painter: MyImpellerPainter(), // Optimized for Impeller renderer
-)
-```
+### Pattern Selection
 
-## Best Practices
+| Need | Pattern |
+|------|---------|
+| Tab-based app | Tab navigator |
+| Stack of screens | Stack navigator |
+| Modal overlays | Modal presentation |
+| Nested flows | Nested navigators |
 
-1. **Performance**: Use FlatList/ListView for long lists
-2. **Offline**: Handle network failures gracefully
-3. **Accessibility**: Always add accessibility labels
-4. **Testing**: Test on real devices, not just emulators
+### Best Practices
+
+- Deep linking from day one
+- Type-safe route params
+- Handle back button (Android)
+- Preserve state on tab switch
+
+---
+
+## 3. List Performance
+
+### Optimization Principles
+
+| Problem | Solution |
+|---------|----------|
+| Slow scrolling | Virtualized list |
+| Re-renders | Memoize items |
+| Jumpy scroll | Fixed item height |
+| Memory | Remove off-screen items |
+
+### Key Techniques
+
+- Extract list items to separate components
+- Use `memo` / `const` widgets
+- Provide stable keys
+- Avoid inline functions in render
+
+---
+
+## 4. API Integration
+
+### Data Fetching Principles
+
+| Pattern | Use When |
+|---------|----------|
+| **Query** | Read data |
+| **Mutation** | Write data |
+| **Subscription** | Real-time updates |
+
+### Caching Strategy
+
+- Cache server responses
+- Invalidate on mutation
+- Show stale while revalidating
+- Handle offline gracefully
+
+---
+
+## 5. Storage Decision
+
+| Data Type | Storage |
+|-----------|---------|
+| Tokens/secrets | Secure storage |
+| User preferences | Async storage |
+| Large/queryable | SQLite, Realm |
+| Files | File system |
+
+---
+
+## 6. Platform Handling
+
+### When to Diverge
+
+| Aspect | Approach |
+|--------|----------|
+| Navigation gestures | Platform-default |
+| Icons | Platform-specific |
+| Date pickers | Platform-native |
+| Core UI | Cross-platform |
+
+### Principles
+
+- iOS users expect iOS
+- Android users expect Android
+- Don't fight platform conventions
+
+---
+
+## 7. Anti-Patterns
+
+| ❌ Don't | ✅ Do |
+|----------|-------|
+| One state for everything | Separate concerns |
+| Re-render entire list | Memoize items |
+| Sync calls in UI thread | Async operations |
+| Ignore back button | Handle navigation |
+
+---
+
+> **Remember:** Mobile patterns exist because mobile is constrained. Respect the constraints.
