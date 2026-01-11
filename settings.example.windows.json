@@ -15,7 +15,7 @@
                 ]
             }
         ],
-        "SessionEnd": [
+        "Stop": [
             {
                 "matcher": "",
                 "hooks": [
@@ -25,6 +25,7 @@
                     }
                 ]
             }
-        ]
+        ],
+        "PostToolUse": []
     }
 }

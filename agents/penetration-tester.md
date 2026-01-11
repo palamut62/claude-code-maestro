@@ -3,7 +3,7 @@ name: penetration-tester
 description: Expert in offensive security, penetration testing, red team operations, and vulnerability exploitation. Use for security assessments, attack simulations, and finding exploitable vulnerabilities. Triggers on pentest, exploit, attack, hack, breach, pwn, redteam, offensive.
 tools: Read, Grep, Glob, Bash, Edit, Write
 model: inherit
-skills: vulnerability-scanner, red-team-tactics, api-security-testing, security-checklist
+skills: clean-code, vulnerability-scanner, red-team-tactics, api-patterns
 ---
 
 # Penetration Tester
@@ -67,16 +67,16 @@ Expert in offensive security, vulnerability exploitation, and red team operation
 
 | Vulnerability | Test Focus |
 |---------------|------------|
-| **Broken Access Control** | IDOR, privilege escalation |
+| **Broken Access Control** | IDOR, privilege escalation, SSRF |
+| **Security Misconfiguration** | Cloud configs, headers, defaults |
+| **Supply Chain Failures** 🆕 | Deps, CI/CD, lock file integrity |
 | **Cryptographic Failures** | Weak encryption, exposed secrets |
-| **Injection** | SQL, command, LDAP |
+| **Injection** | SQL, command, LDAP, XSS |
 | **Insecure Design** | Business logic flaws |
-| **Misconfiguration** | Default creds, verbose errors |
-| **Vulnerable Components** | Outdated dependencies |
 | **Auth Failures** | Weak passwords, session issues |
-| **Integrity Failures** | Supply chain attacks |
+| **Integrity Failures** | Unsigned updates, data tampering |
 | **Logging Failures** | Missing audit trails |
-| **SSRF** | Internal network access |
+| **Exceptional Conditions** 🆕 | Error handling, fail-open |
 
 ---
 

@@ -1,6 +1,7 @@
 ---
 name: frontend-design
 description: Design thinking and decision-making for web UI. Use when designing components, layouts, color schemes, typography, or creating aesthetic interfaces. Teaches principles, not fixed values.
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 ---
 
 # Frontend Design System
@@ -10,21 +11,31 @@ description: Design thinking and decision-making for web UI. Use when designing 
 
 ---
 
-## 🔴 MANDATORY: Read ALL Reference Files Before Working!
+## 🎯 Selective Reading Rule (MANDATORY)
 
-**⛔ DO NOT start designing until you read these files:**
+**Read REQUIRED files always, OPTIONAL only when needed:**
 
-| File | Content | Status |
-|------|---------|--------|
-| [color-system.md](color-system.md) | Color theory, emotion mapping | ⬜ Read |
-| [typography-system.md](typography-system.md) | Font pairing, scales | ⬜ Read |
-| [visual-effects.md](visual-effects.md) | Glassmorphism, shadows, gradients | ⬜ Read |
-| [animation-guide.md](animation-guide.md) | Motion, timing, easing | ⬜ Read |
-| [motion-graphics.md](motion-graphics.md) | Lottie, GSAP, SVG, 3D | ⬜ Read |
-| [decision-trees.md](decision-trees.md) | Context templates | ⬜ Read |
-| **[ux-psychology.md](ux-psychology.md)** | **Hick's, Fitts', Trust, Emotion** | **⬜ CRITICAL** |
+| File | Status | When to Read |
+|------|--------|--------------|
+| [ux-psychology.md](ux-psychology.md) | 🔴 **REQUIRED** | Always read first! |
+| [color-system.md](color-system.md) | ⚪ Optional | Color/palette decisions |
+| [typography-system.md](typography-system.md) | ⚪ Optional | Font selection/pairing |
+| [visual-effects.md](visual-effects.md) | ⚪ Optional | Glassmorphism, shadows, gradients |
+| [animation-guide.md](animation-guide.md) | ⚪ Optional | Animation needed |
+| [motion-graphics.md](motion-graphics.md) | ⚪ Optional | Lottie, GSAP, 3D |
+| [decision-trees.md](decision-trees.md) | ⚪ Optional | Context templates |
 
-> 🔴 **ux-psychology.md is OFTEN SKIPPED but ESSENTIAL!** It contains user psychology laws that affect EVERY design decision.
+> 🔴 **ux-psychology.md = ALWAYS READ. Others = only if relevant.**
+
+---
+
+## 🔧 Runtime Scripts
+
+**Execute these for audits (don't read, just run):**
+
+| Script | Purpose | Usage |
+|--------|---------|-------|
+| `scripts/ux_audit.py` | UX Psychology & Accessibility Audit | `python scripts/ux_audit.py <project_path>` |
 
 ---
 

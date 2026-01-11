@@ -2,24 +2,43 @@
 
 > **AI Development Orchestrator** - Transform Claude into a powerful development team with specialized agents, intelligent skills, and automated workflows.
 
+> [!WARNING]
+> **Before Installation:** The `README.md` files in `agents/`, `skills/`, `commands/`, `scripts/` directories are for GitHub developers only. **Delete these files before using the project.** Claude Code CLI may read them as agents or skills, which can interfere with proper system operation.
+
 [![Agents](https://img.shields.io/badge/Agents-17-blue)](#-agents)
-[![Skills](https://img.shields.io/badge/Skills-69-green)](#-skills)
+[![Skills](https://img.shields.io/badge/Skills-78-green)](#-skills)
 [![Commands](https://img.shields.io/badge/Commands-10-orange)](#-commands)
-[![Python](https://img.shields.io/badge/Scripts-7-yellow)](#-scripts)
+[![Python](https://img.shields.io/badge/Scripts-8-yellow)](#-scripts)
 
 ---
 
 ## ✨ Features
 
 - 🤖 **17 Specialized Agents** - Expert AI personas for frontend, backend, test engineering, security, and more
-- 📚 **69 Skills** - Domain knowledge resources with patterns, best practices, and templates
+- 📚 **78 Skills** - Domain knowledge resources with patterns, best practices, and templates
 - ⚡ **10 Slash Commands** - Quick actions for creating, orchestrating, debugging, testing, and deploying
-- 🐍 **7 Python Scripts** - Automation hooks, AI-controlled quality audit & [NEW] Visual Dashboard
+- 🐍 **8 Python Scripts** - Automation hooks, AI-controlled quality audit & [NEW] Visual Dashboard
 - 🎯 **Clean Code Standards** - CRITICAL skill for concise, direct, solution-focused code
 - 🎭 **6 Behavioral Modes** - Adaptive AI behavior: Brainstorm, Implement, Debug, Review, Teach, Ship
 - 🔄 **Project Detection** - Automatically detects project type and tech stack
 - 🧩 **Native Agent Orchestration** - Coordinate multiple agents using Claude Code's Agent Tool
 - 🧠 **Synthesis Reporting** - Automatically combines multi-agent outputs into cohesive reports
+
+---
+
+## 🧠 The Maestro Philosophy: Principles > Memory
+
+Maestro fundamentally shifts AI development from **Probabilistic Guesswork** to **Deterministic Engineering**.
+
+| Feature | Standard AI / Claude CLI | Maestro Architecture |
+| :--- | :--- | :--- |
+| **Source of Truth** | Training Data (Average of the Internet) | **Active Principles** (`SKILL.md` files) |
+| **Decision Making** | "It usually looks like this" (Imitation) | **"Hick's Law requires this"** (Reasoning) |
+| **Validation** | Visual Guesswork | **Runtime Scripts** (Math-verified Contrast/Touch targets) |
+| **Context** | Single Long Core Prompt | **Modular Loading** (Only relevant skills loaded) |
+| **Output** | Generic / Safe Patterns ("Blue Buttons") | **Radical / Specific Designs** (Asymmetric, Custom) |
+
+> 🚫 **We don't trust AI memory.** We trust **verified principles** and **runtime validation**.
 
 ---
 
@@ -92,9 +111,6 @@ claude --debug
 
 Look for `Found 1 hook matchers` in the debug output.
 
-### Troubleshooting
-
-If hooks aren't working, see **[HOOKS-TROUBLESHOOTING.md](HOOKS-TROUBLESHOOTING.md)** for detailed solutions.
 
 ---
 
@@ -157,14 +173,15 @@ maestro/
 │   ├── orchestrate.md
 │   ├── debug.md
 │   └── ...
-├── scripts/             # 7 Python automation scripts
+├── scripts/             # 8 Python automation scripts
 │   ├── session_hooks.py
 │   ├── explorer_helper.py
 │   ├── lint_check.py        # 🆕 AI-controlled quality audit
 │   ├── dependency_scanner.py
 │   ├── session_manager.py
 │   ├── auto_preview.py
-│   └── setup.py
+│   ├── setup.py
+│   └── README.md
 ├── data/                # Runtime state
 ├── settings.json        # Hook configuration
 ├── CLAUDE.md           # AI behavior configuration
@@ -189,11 +206,11 @@ flowchart LR
     UserCmd -->|Bash Command| Execute[Execute Command]
     Execute --> Ready
     
-    UserCmd -->|Exit| SessionEnd[SessionEnd Hook<br/>Save Session]
-    SessionEnd --> End([Exit])
+    UserCmd -->|Exit| Stop[Stop Hook<br/>Save Session]
+    Stop --> End([Exit])
     
     style SessionStart fill:#4CAF50,color:#fff
-    style SessionEnd fill:#9C27B0,color:#fff
+    style Stop fill:#9C27B0,color:#fff
 ```
 
 **Key Features:**
@@ -215,7 +232,7 @@ Specialized AI agents that handle different aspects of development:
 | **explorer-agent** | Codebase exploration, dependency research | 210 |
 | **debugger** | Root cause analysis, systematic debugging | 250+ |
 | **api-designer** | REST/GraphQL, OpenAPI, API security | 521 |
-| **mobile-developer** | React Native, Flutter, Expo, App Store | 354 |
+| **mobile-developer** | React Native, Flutter, Expo, App Store | 278 |
 | **devops-engineer** | PM2, deployment, CI/CD, rollback | 275 |
 | **test-engineer** | Testing strategies, TDD, coverage | 268 |
 | **security-auditor** | Security review, vulnerabilities | 229 |
@@ -242,7 +259,7 @@ Knowledge resources that agents reference for domain expertise:
 ### 🏗️ Architecture & Patterns
 - `api-patterns` - REST/GraphQL design patterns
 - `react-patterns` - React component patterns
-- `mobile-patterns` - Mobile development patterns
+- `mobile-patterns` - Mobile development patterns (Testing, Debugging, Backend)
 - `nodejs-best-practices` - Node.js 23 patterns (Native TS, SQLite)
 - `nextjs-best-practices` - Next.js 15 App Router & React 19 patterns
 - `frontend-design` - 2025 Design Precision (8-point grid, Golden Ratio)
@@ -262,6 +279,10 @@ Knowledge resources that agents reference for domain expertise:
 - `systematic-debugging` - Debugging methodology
 - `lint-and-validate` - 🆕 AI-controlled quality audit (ESLint, TSC, Ruff, Bandit)
 - `mobile-ux-patterns` - Touch gestures, haptics, accessibility
+- `mobile-design-thinking` - ⚠️ Anti-memorization, deep context analysis
+- `mobile-backend` - Push notifications, offline sync, mobile API
+- `mobile-testing` - Testing pyramid, E2E (Detox/Maestro), platform-specific
+- `mobile-debugging` - Native vs JS debugging, Flipper, Logcat
 
 ---
 
@@ -288,7 +309,7 @@ Python automation scripts that provide intelligent hooks:
 ### Hook Scripts (Automatic)
 | Script | Hook | Purpose |
 |--------|------|---------|
-| `session_hooks.py` | SessionStart/End | Project detection, session tracking |
+| `session_hooks.py` | SessionStart/Stop | Project detection, session tracking |
 | `explorer_helper.py` | SessionStart | Deep project discovery |
 
 ### Utility Scripts (Manual)
@@ -379,7 +400,7 @@ Hooks are configured in `settings.json`:
         }]
       }
     ],
-    "SessionEnd": [
+    "Stop": [
       {
         "matcher": "",
         "hooks": [{
@@ -419,53 +440,7 @@ Hooks are configured in `settings.json`:
 | Behavioral Modes | 6 |
 | Hook Scripts | 2 (session_hooks, explorer_helper) |
 
----
 
-## 🔧 Troubleshooting
-
-### ❌ Hooks Not Working?
-
-If your `SessionStart` or `SessionEnd` hooks are not triggering, you likely need to add the `matcher` property to your hook configuration.
-
-**See [HOOKS-TROUBLESHOOTING.md](HOOKS-TROUBLESHOOTING.md) for detailed solutions.**
-
-**Quick Fix:**
-
-❌ **Wrong (won't work):**
-```json
-"SessionStart": [
-  {
-    "command": "python script.py"
-  }
-]
-```
-
-✅ **Correct (will work):**
-```json
-"SessionStart": [
-  {
-    "matcher": "startup",
-    "hooks": [
-      {
-        "type": "command",
-        "command": "python script.py"
-      }
-    ]
-  }
-]
-```
-
-**Debug your hooks:**
-```bash
-claude --debug
-```
-
-Check the debug log at `~/.claude/debug/[session-id].txt` and look for:
-- `Found 1 hook matchers` ✅ (not `Found 0` ❌)
-
-For complete troubleshooting guide, see **[HOOKS-TROUBLESHOOTING.md](HOOKS-TROUBLESHOOTING.md)**.
-
----
 
 ## 📄 License
 
@@ -479,7 +454,20 @@ Contributions are welcome! Please read the documentation in each directory's REA
 
 ---
 
+## ⭐ Star History
+
+<a href="https://star-history.com/#xenitV1/claude-code-maestro&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=xenitV1/claude-code-maestro&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=xenitV1/claude-code-maestro&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=xenitV1/claude-code-maestro&type=Date" />
+ </picture>
+</a>
+
+---
+
 <p align="center">
   <b>🎼 Maestro - Built with ❤️ for AI-assisted development</b><br/>
   <a href="https://x.com/xenit_v0">@xenit_v0</a>
 </p>
+

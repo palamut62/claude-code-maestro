@@ -2,37 +2,34 @@
 
 Specialized AI agents for different development domains. Each agent has specific expertise, tools, and skill references.
 
-## Agent List
+## Agent List (17 Total)
 
-| Agent | Lines | Expertise |
-|-------|-------|-----------|
-| [penetration-tester](penetration-tester.md) | 280 | 🆕 Offensive security, PTES, exploitation, red team |
-| [debugger](debugger.md) | 250 | Root cause analysis, systematic debugging |
-| [api-designer](api-designer.md) | 521 | REST/GraphQL, OpenAPI, API security |
-| [mobile-developer](mobile-developer.md) | 354 | React Native, Flutter, Expo, App Store |
-| [devops-engineer](devops-engineer.md) | 275 | PM2, deployment, CI/CD, rollback |
-| [test-engineer](test-engineer.md) | 268 | Testing strategies, TDD, coverage |
-| [security-auditor](security-auditor.md) | 230 | OWASP Top 10:2025, vulnerability scanning |
-| [explorer-agent](explorer-agent.md) | 210 | Codebase exploration, dependency research |
-| [orchestrator](orchestrator.md) | 209 | Multi-agent coordination |
-| [database-architect](database-architect.md) | 189 | Schema design, Prisma, migrations |
-| [backend-specialist](backend-specialist.md) | 187 | Node.js, Express, FastAPI |
-| [frontend-specialist](frontend-specialist.md) | 149 | React, Next.js, Tailwind |
-| [project-planner](project-planner.md) | 140 | Task breakdown, planning |
-| [performance-optimizer](performance-optimizer.md) | 132 | Performance profiling |
-| [documentation-writer](documentation-writer.md) | 98 | Documentation, API docs |
-| [seo-specialist](seo-specialist.md) | 110 | 🆕 SEO, GEO, Core Web Vitals, AI citations |
-
+| Agent | Expertise |
+|-------|-----------|
+| [orchestrator](orchestrator.md) | Multi-agent coordination, PLAN.md enforcement |
+| [project-planner](project-planner.md) | Task breakdown, ROOT PLAN, milestones |
+| [frontend-specialist](frontend-specialist.md) | React, Next.js, Tailwind, design systems |
+| [backend-specialist](backend-specialist.md) | Node.js, Python, Express, FastAPI |
+| [mobile-developer](mobile-developer.md) | React Native, Flutter, Expo, App Store |
+| [database-architect](database-architect.md) | Schema design, Prisma, migrations |
+| [devops-engineer](devops-engineer.md) | PM2, deployment, CI/CD, rollback |
+| [test-engineer](test-engineer.md) | Testing strategies, TDD, coverage |
+| [debugger](debugger.md) | Root cause analysis, systematic debugging |
+| [security-auditor](security-auditor.md) | OWASP Top 10:2025, vulnerability scanning |
+| [penetration-tester](penetration-tester.md) | Offensive security, PTES, red team |
+| [performance-optimizer](performance-optimizer.md) | Performance profiling, Core Web Vitals |
+| [seo-specialist](seo-specialist.md) | SEO, GEO, AI citations |
+| [documentation-writer](documentation-writer.md) | README, API docs |
+| [explorer-agent](explorer-agent.md) | Codebase exploration, dependency research |
+| [game-developer](game-developer.md) | Game design, 2D/3D, multiplayer |
 
 ## Agent Format
-
-Each agent follows this structure:
 
 ```yaml
 ---
 name: agent-name
 description: Brief description with trigger keywords
-tools: Read, Grep, Glob, Bash, Edit, Write
+allowed-tools: Read, Grep, Glob, Bash, Edit, Write
 model: inherit
 skills: skill1, skill2
 ---
@@ -42,7 +39,6 @@ skills: skill1, skill2
 ## Your Expertise
 ## Code Patterns  
 ## Review Checklist
-## When You Should Be Used
 ```
 
 ## Usage
@@ -52,6 +48,5 @@ Agents are invoked by Claude based on context. Keywords in user requests trigger
 **Triggers:**
 - "deploy", "production" → devops-engineer
 - "mobile", "react native" → mobile-developer
-- "api", "endpoint" → api-designer
 - "test", "coverage" → test-engineer
-- "lint", "check quality", "validate" → lint-and-validate (skill)
+- "orchestrate", "coordinate" → orchestrator

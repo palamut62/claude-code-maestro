@@ -1,6 +1,7 @@
 ---
 name: parallel-agents
 description: Native multi-agent orchestration using Claude Code's Agent Tool. Use when multiple independent tasks can run with different domain expertise or when comprehensive analysis requires multiple perspectives.
+allowed-tools: Read, Glob, Grep
 ---
 
 # Native Parallel Agents
@@ -104,7 +105,7 @@ Agents: security-auditor → penetration-tester → synthesis
 | `api-designer` | API Design | "REST", "GraphQL", "OpenAPI" |
 | `debugger` | Debugging | "bug", "error", "not working" |
 | `explorer-agent` | Discovery | "explore", "map", "structure" |
-| `documentation-writer` | Documentation | "docs", "README", "API docs" |
+| `documentation-writer` | Documentation | "write docs", "create README", "generate API docs" |
 | `performance-optimizer` | Performance | "slow", "optimize", "profiling" |
 | `project-planner` | Planning | "plan", "roadmap", "milestones" |
 | `seo-specialist` | SEO | "SEO", "meta tags", "search ranking" |

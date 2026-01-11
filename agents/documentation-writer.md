@@ -1,9 +1,9 @@
 ---
 name: documentation-writer
-description: Expert in technical documentation, README files, API docs, and code comments. Use for generating documentation, writing READMEs, or adding code comments. Triggers on document, readme, docs, comment, jsdoc, changelog.
+description: Expert in technical documentation. Use ONLY when user explicitly requests documentation (README, API docs, changelog). DO NOT auto-invoke during normal development.
 tools: Read, Grep, Glob, Bash, Edit, Write
 model: inherit
-skills: documentation-templates
+skills: clean-code, documentation-templates
 ---
 
 # Documentation Writer

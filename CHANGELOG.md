@@ -1,9 +1,260 @@
-# Changelog
+# Maestro Changelog
 
-All notable changes to Maestro will be documented in this file.
+## [0.3.3] - 2026-01-11
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+### 🧠 Intelligent Planning & Dynamic Naming
+
+### Added
+
+#### Analytical Mode (Survey)
+- **`project-planner.md`** → Introduced **Analytical vs. Planning Mode**
+  - **SURVEY Mode:** Triggers on "analyze", "find", "explain". Research only, no plan file created.
+  - **PLANNING Mode:** Triggers on "build", "refactor", "create". Mandatory plan file required.
+- **`CLAUDE.md`** → New **SURVEY/INTEL** request classification to prevent over-triggering the planning agent.
+
+#### Dynamic Naming Enforcement
+- **`project-planner.md`** → Strict ban on generic names like `plan.md`, `PLAN.md`, or `plan.dm`.
+- **`CLAUDE.md`** & **`SKILL.md`** → All hardcoded `PLAN.md` references replaced with dynamic `{task-slug}.md` placeholders.
+- Forced task-based naming (e.g., `auth-feature.md` instead of `plan.md`) for better project organization.
+
+### Changed
+- **`CLAUDE.md`** → **Edit Mode** logic softened: Only suggests a plan for multi-file/structural changes. Single-file fixes proceed directly.
+- **`project-planner.md`** → Standardized all naming convention rules to project root.
+
+---
+
+## [0.3.2] - 2026-01-09
+
+### 🔧 Documentation Reduction & Workflow Improvements
+
+### Changed
+
+#### Documentation Generation
+- **`documentation-writer.md`** → Now triggers ONLY on explicit user request (not auto-invoked)
+- **`parallel-agents/SKILL.md`** → Narrowed trigger phrases: "write docs" instead of "docs"
+- **`orchestrator.md`** → Documentation agent marked as "explicit request only"
+
+#### Plan File System
+- **Location:** `docs/PLAN-*.md` → `./[task-slug].md` (project root)
+- **Naming:** Dynamic based on task, no `PLAN-` prefix required
+- **`plan-writing/SKILL.md`** → Complete rewrite: Principles over templates
+  - 5 Planning Principles (SHORT, SPECIFIC, DYNAMIC, PROJECT-SPECIFIC SCRIPTS, SIMPLE VERIFICATION)
+  - Removed fixed Phase 1-2-3-4 template
+  - Removed verbose examples (~100 lines removed)
+
+#### Approval Flow
+- **`project-planner.md`** → Removed "STOP and ASK 3 questions" rule
+- **`orchestrator.md`** → Simplified to "Quick Context Check"
+- **`create.md`** → Removed "STOP and ask for approval" checkpoint
+- Plans now created and work proceeds without piece-by-piece approval
+
+### Added
+
+#### Agent Self-Check (`clean-code/SKILL.md`)
+```
+| Check | Question |
+| Goal met? | Did I do exactly what user asked? |
+| Files edited? | Did I modify all necessary files? |
+| Code works? | Did I test/verify the change? |
+| No errors? | Lint and TypeScript pass? |
+| Nothing forgotten? | Any edge cases missed? |
+```
+
+#### Dependency Awareness (`clean-code/SKILL.md`)
+- Before editing ANY file, agents must think:
+  - What imports this file?
+  - What does this file import?
+  - What tests cover this?
+  - Is this a shared component?
+- Rule: Edit file + all dependent files in SAME task
+
+#### Script Execution Rules (`clean-code/SKILL.md`)
+- **Agent → Script Mapping:** Each agent runs ONLY their own skill's scripts
+- **Output Handling:** READ → SUMMARIZE → ASK (not auto-fix)
+  - Parse script output
+  - Summarize errors/warnings/passes
+  - Ask user: "Should I fix the X errors?"
+  - Wait for confirmation
+
+#### OS Detection for Commands (`project-planner.md`)
+- Planner now reads `CODEBASE.md` first to check OS field
+- Windows → Use Claude Write tool for files, PowerShell for commands
+- macOS/Linux → Can use `touch`, `mkdir -p`, bash commands
+- Prevents Unix commands failing on Windows (e.g., `cat <<EOF`)
+
+### Removed
+- Phase 4: Documentation from plan template (now optional)
+- Fixed plan examples (API Endpoint Implementation example)
+- Verbose verification script lists from plan template
+
+---
+
+## [0.3.1] - 2026-01-09
+
+### Fixed
+
+#### Windows Console Encoding
+- **13 Python scripts** updated to remove emoji characters causing `UnicodeEncodeError` on Windows cp1254 consoles
+- Added `sys.stdout.reconfigure(encoding='utf-8', errors='replace')` for UTF-8 safety
+- Affected scripts: `i18n_checker.py`, `type_coverage.py`, `geo_checker.py`, `playwright_runner.py`, `security_scan.py`, `api_validator.py`, `lighthouse_audit.py`, `session_manager.py`, `session_hooks.py`, `explorer_helper.py`, `auto_preview.py`, `dependency_scanner.py`, `setup.py`
+
+#### SEO/GEO Script Bugs
+- **`geo_checker.py`** → Complete rewrite: Now only analyzes public web pages (HTML/JSX/TSX), not markdown documentation files
+- **`seo_checker.py`** → Improved page detection: Only analyzes files in `pages/`, `app/`, `routes/` directories
+- Both scripts now skip config files, tests, utilities, and node_modules
+
+#### SessionEnd Hook Deprecated (Issue #3)
+- **`SessionEnd`** hook replaced with **`Stop`** per Claude Code CLI 2.1.2+ requirements
+- Updated: `settings.example.unix.json`, `settings.example.windows.json`, `README.md`, docs
+
+### Added
+
+#### Game Development Enhancement
+- **`game-development/game-art/SKILL.md`** → Visual style selection, asset pipelines, color theory, animation principles
+- **`game-development/game-audio/SKILL.md`** → Sound design, music integration, adaptive audio, 3D audio
+- Both skills use decision trees and principle tables (no code examples)
+
+#### GEO Checker 2025 Updates (Research-Based)
+- **Entity Recognition** → Checks for Organization, LocalBusiness, Brand schema
+- **Original Statistics/Data** → Detects percentages, dollar amounts, research citations
+- **Direct Answer Patterns** → Detects LLM-friendly content ("is defined as", "refers to", etc.)
+
+#### Dynamic Plan File Naming
+- **`project-planner.md`** → Plan files now named dynamically: `docs/PLAN-{task-slug}.md`
+- **`commands/plan.md`** → Updated with naming convention and examples
+- Allows multiple plan files per project
+
+### Changed
+- **`game-development/SKILL.md`** → Restructured as orchestrator with sub-skill routing tables
+- **`game-developer.md`** → Added `game-art` and `game-audio` to skills list (now 12 sub-skills)
+- **`tailwind-patterns/SKILL.md`** → Complete rewrite for Tailwind v4 (2025): CSS-first config, container queries, OKLCH colors
+
+### Removed
+- **`security-checklist/`** → Merged into `vulnerability-scanner/checklists.md`
+- Updated `security-auditor.md` and `penetration-tester.md` agent skills accordingly
+
+---
+
+## [0.3.0] - 2026-01-09
+
+### 🏗️ Modular Architecture Overhaul
+
+SKILL.md files have been streamlined and content moved to modular structure.
+
+### Added
+
+#### 🔧 allowed-tools System
+- **`allowed-tools: Read, Grep, Glob`** → When a skill is active, Claude can ONLY use these tools. Can read/search files but cannot modify them. Provides read-only security.
+
+#### 📁 New Files
+- **`/plan` command** → Planning-only mode without writing code. Triggers project-planner agent. Added because Claude Code CLI's built-in Plan tool was bypassing Maestro system.
+- **`ARCHITECTURE.md`** → Complete system architecture document. Agent, skill, script relationships.
+- **`docs/` directory** → Official Claude Code reference documents (`claude-code-reference.md`, `aget-skills.md`).
+- **`skills/i18n-localization/`** → New skill for multi-language support (internationalization).
+- **`skills/bash-linux/`** → Bash terminal skill for macOS/Linux users.
+- **22+ new modular files** → SKILL.md files streamlined, details moved to separate .md files (Progressive Disclosure).
+
+#### 🐍 Python Scripts (Zero-Context Execution)
+
+Python scripts added under skills. **How it works:**
+1. Claude does NOT read the script into context (token savings)
+2. Claude EXECUTES the script directly (`python scripts/xyz.py`)
+3. Only script OUTPUT enters context
+4. Result: Consistent, tested, fast execution
+
+| Skill | Script | Purpose |
+|-------|--------|---------|
+| `webapp-testing` | `playwright_runner.py` | Headless browser tests |
+| `frontend-design` | `accessibility_checker.py` | WCAG compliance check |
+| `frontend-design` | `ux_audit.py` | UX standards audit |
+| `mobile-design` | `mobile_audit.py` | Touch target, ergonomics check |
+| `performance-profiling` | `lighthouse_audit.py` | Core Web Vitals measurement |
+| `vulnerability-scanner` | `security_scan.py` | Security vulnerability scanning |
+| `geo-fundamentals` | `scripts/` | GEO metrics analysis |
+| `seo-fundamentals` | `scripts/` | SEO scoring scripts |
+| `database-design` | `scripts/` | Schema validation |
+| `lint-and-validate` | `scripts/` | Multi-linter runner |
+| `testing-patterns` | `scripts/` | Test coverage analysis |
+
+### Changed
+- **`orchestrator.md`** (+174 lines) → Mandatory PLAN.md check, Socratic Gate (3 questions), Conflict Resolution
+- **`project-planner.md`** (+268 lines) → ROOT PLAN concept, 10-point planning framework
+- **`orchestrate.md`** → Minimum 3 agent rule (1 agent = delegation, 3+ = orchestration), EXIT GATE
+- **`CLAUDE.md`** (-117 lines net) → Streamlined, modular script references added
+- **42 SKILL.md files** → Long content moved to separate files, Progressive Disclosure applied
+
+### Removed
+
+| File | Why Removed |
+|------|-------------|
+| `scripts/lint_check.py` | `npm run lint && npx tsc --noEmit` native commands are faster and dependency-free |
+| `skills/api-security-testing/` | Consolidated under `api-patterns/security-testing.md` |
+| `skills/artifacts-builder/` | Became redundant with built-in Claude Code artifacts feature |
+| `skills/conversation-manager/` | Integrated into orchestrator agent, separate skill unnecessary |
+| `skills/git-worktrees/` | Rarely used, standard git commands sufficient |
+| 12 template files | `skills/templates/` → moved to `app-builder/templates/` (single location) |
+
+### Summary
+- 56 files changed + 47 new files + 16 deleted files
+- Skills now modular: SKILL.md (main) + separate .md files + scripts/
+- Zero-Context Execution: Python scripts run without consuming context
+
+---
+
+
+## [0.2.4] - 2026-01-06
+
+### 📱 Comprehensive Mobile Development Expansion
+
+### 🧠 Mobile Psychology & Engineering Culture (CRITICAL)
+- **Touch Psychology & Ergonomics**:
+  - Implemented **Fitts' Law** and **Thumb Zone** principles for layout decisions.
+  - Buttons and interactables now strictly follow specific hit-area and placement rules for optimal user reachability.
+  - New skill `skills/mobile-design/touch-psychology.md` serves as the primary ergonomic reference.
+- **Professional Testing & Debugging**:
+  - Introduced "Production-Grade" testing culture: Not just "writing tests," but defining strategies.
+  - Added specialized toolchains for **Detox, Maestro, Flipper, and Reactotron**.
+  - New skills: `mobile-testing.md` (E2E/Unit strategies) and `mobile-debugging.md` (Native vs JS logs).
+
+### Added
+- **13 New Specialized Mobile Skills (Complete Inventory)** 📚
+  - **Core Strategy**:
+    - `SKILL.md`: Central hub with anti-patterns and mandatory checkpoints.
+    - `mobile-design-thinking.md`: Anti-memorization protocols and deep context analysis.
+    - `decision-trees.md`: Context-based decision frameworks for stack/state/nav selection.
+  - **Platform Mastery**:
+    - `platform-ios.md`: iOS Human Interface Guidelines (HIG), SF Symbols, and patterns.
+    - `platform-android.md`: Material Design 3, Adaptive layouts, and Android specifics.
+  - **Engineering & Operations**:
+    - `mobile-testing.md`: E2E (Detox/Maestro), Testing Pyramid, Offline/Network testing.
+    - `mobile-debugging.md`: Native vs JS logs, Flipper, Reactotron, adb logcat, Xcode.
+    - `mobile-backend.md`: Offline Sync (TanStack Query), Push Notifications, API security.
+    - `mobile-performance.md`: Frame drops, memory leaks, list virtualization (FlashList).
+  - **UX & Design Systems**:
+    - `touch-psychology.md`: Ergonomics, Fitts' Law, Thumb Zones.
+    - `mobile-navigation.md`: Tab/Stack/Drawer patterns, Deep Linking.
+    - `mobile-typography.md`: Dynamic Type (iOS), SP units (Android), readable scales.
+    - `mobile-color-system.md`: Dark mode, OLED optimization, contrast ratios.
+
+- **Mandatory Build Verification Loop** 🛡️
+  - **Absolute Rule**: Agents CANNOT mark a mobile task as complete without successfully running a native build (`run-android` / `run-ios`).
+- **Framework Detection Expansion** 🔍
+  - Added **Flutter** detection via `pubspec.yaml`.
+  - Added **Ionic / Capacitor** detection (@ionic/react, @capacitor/core).
+
+### Fixed
+- **Explorer Helper & CODEBASE.md** 🐍
+  - **CRITICAL FIX**: `node_modules` and other heavy directories are now correctly excluded from file counts.
+  - **Context Cleanliness**: AI now sees a clean, focused `CODEBASE.md` without thousands of dependency files.
+  - Fixed "Invisible Directory Structure" bug: core project folders (`src`, `lib`) are always expanded.
+- **Setup Script** 🛠️
+  - Updated internal counters for TUI installer (Skills: 69 → 78).
+
+### Changed
+- **README.md & CLAUDE.md**: Updated counts and added documentation for all new mobile capabilities.
+- **scripts/README.md**: Updated architecture details and version to 2.1.
+
+---
 
 ## [0.2.0] - 2026-01-05
 
@@ -329,7 +580,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/xenitV1/claude-code-maestro/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/xenitV1/claude-code-maestro/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/xenitV1/claude-code-maestro/compare/v0.3.0...v0.3.1
+[0.3.0]: https://github.com/xenitV1/claude-code-maestro/compare/v0.2.4...v0.3.0
+[0.2.4]: https://github.com/xenitV1/claude-code-maestro/compare/v0.2.0...v0.2.4
 [0.2.0]: https://github.com/xenitV1/claude-code-maestro/compare/v0.0.7...v0.2.0
 [0.0.7]: https://github.com/xenitV1/claude-code-maestro/compare/v0.0.6...v0.0.7
 [0.0.6]: https://github.com/xenitV1/claude-code-maestro/compare/v0.0.5...v0.0.6

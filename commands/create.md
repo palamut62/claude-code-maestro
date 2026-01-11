@@ -22,8 +22,9 @@ This command starts a new application creation process.
    - Use `project-planner` agent for task breakdown
    - Determine tech stack
    - Plan file structure
+   - Create plan file and proceed to building
 
-3. **Application Building**
+3. **Application Building (After Approval)**
    - Orchestrate with `app-builder` skill
    - Coordinate expert agents:
      - `database-architect` → Schema

@@ -1,280 +1,110 @@
 ---
 name: clean-code
 description: Pragmatic coding standards - concise, direct, no over-engineering, no unnecessary comments
-tools: Read, Write, Edit
-version: 1.0
+allowed-tools: Read, Write, Edit
+version: 2.0
 priority: CRITICAL
 ---
 
 # Clean Code - Pragmatic AI Coding Standards
 
-> **CRITICAL SKILL** - This skill overrides all verbose tendencies. When writing code, be **concise, direct, and solution-focused**.
+> **CRITICAL SKILL** - Be **concise, direct, and solution-focused**.
 
 ---
 
-## Golden Rules
+## Core Principles
 
-### 1. No Verbose Explanations
-**WRONG:**
-```javascript
-// Check if user is authenticated before allowing access to protected route
-// This is a security measure to prevent unauthorized access
-if (user.isAuthenticated) {
-  // User is authenticated, grant access
-  return renderProtectedPage();
-} else {
-  // User is not authenticated, redirect to login
-  return redirect('/login');
-}
-```
-
-**RIGHT:**
-```javascript
-if (!user.isAuthenticated) return redirect('/login');
-return renderProtectedPage();
-```
-
-### 2. No Self-Explanatory Comments
-Code should be self-documenting. If you need a comment, rename the variable.
-
-**WRONG:**
-```javascript
-// Get all users from database
-const users = db.get('users');
-
-// Filter out inactive users
-const active = users.filter(u => u.active);
-```
-
-**RIGHT:**
-```javascript
-const activeUsers = db.get('users').filter(u => u.active);
-```
-
-### 3. Direct Solutions Only
-**WRONG:**
-```javascript
-// First, let's create a helper function to handle the case where
-// we need to check if a value exists in the array...
-function hasValue(arr, val) {
-  return arr.includes(val);
-}
-
-// Now we can use it
-if (hasValue(users, id)) {
-  // ...
-}
-```
-
-**RIGHT:**
-```javascript
-if (users.includes(id)) { /* ... */ }
-```
+| Principle | Rule |
+|-----------|------|
+| **SRP** | Single Responsibility - each function/class does ONE thing |
+| **DRY** | Don't Repeat Yourself - extract duplicates, reuse |
+| **KISS** | Keep It Simple - simplest solution that works |
+| **YAGNI** | You Aren't Gonna Need It - don't build unused features |
+| **Boy Scout** | Leave code cleaner than you found it |
 
 ---
 
-## When to Write Code
+## Naming Rules
 
-### Write Code When:
-1. **User asks for a feature** → Write the feature, not a planning document
-2. **User reports a bug** → Fix it, don't explain the debugging process
-3. **User asks "how does X work"** → Brief explanation, then move on
+| Element | Convention |
+|---------|------------|
+| **Variables** | Reveal intent: `userCount` not `n` |
+| **Functions** | Verb + noun: `getUserById()` not `user()` |
+| **Booleans** | Question form: `isActive`, `hasPermission`, `canEdit` |
+| **Constants** | SCREAMING_SNAKE: `MAX_RETRY_COUNT` |
 
-### Don't Write Code When:
-1. User only asks "what do you think?"
-2. User is exploring ideas (use brainstorming mode)
-3. No clear requirement exists (ask, don't assume)
-
----
-
-## Anti-Patterns to Avoid
-
-| Anti-Pattern | Example | Fix |
-|--------------|---------|-----|
-| **Over-commenting** | Comment every line | Delete obvious comments |
-| **Over-abstracting** | Helper for one-line operation | Inline the code |
-| **Over-engineering** | Factory for 2 objects | Direct instantiation |
-| **Defensive coding** | Check for impossible null | Remove dead code |
-| **Tutorial-style** | "First we import..." | Just write the code |
-| **Yoda conditions** | `if (null === x)` | `if (x === null)` |
-| **Early returns** | Deep nesting | Guard clauses |
+> **Rule:** If you need a comment to explain a name, rename it.
 
 ---
 
-## Code Style Guidelines
+## Function Rules
 
-### JavaScript/TypeScript
-```typescript
-// Prefer concise patterns
-const result = data?.map(x => x.value).filter(Boolean) ?? [];
-
-// Guard clauses
-if (!user) return unauthorized();
-
-// Direct returns
-return isValid ? success() : error();
-
-// No unnecessary intermediates
-return items.filter(x => x.active).map(x => x.id);
-```
-
-### Python
-```python
-# Concise, pythonic
-active_users = [u for u in users if u.is_active]
-
-# Guard clauses
-if not request.user.is_authenticated:
-    return HttpResponseForbidden()
-
-# Direct returns
-return JsonResponse({"data": result})
-```
-
-### React/Next.js
-```tsx
-// Direct, no prop drilling abstractions
-export default function UserProfile({ user }: { user: User }) {
-  if (!user) return <LoginPrompt />;
-  return <ProfileData user={user} />;
-}
-
-// No separate container components
-// No unnecessary HOCs
-// Use hooks directly
-```
+| Rule | Description |
+|------|-------------|
+| **Small** | Max 20 lines, ideally 5-10 |
+| **One Thing** | Does one thing, does it well |
+| **One Level** | One level of abstraction per function |
+| **Few Args** | Max 3 arguments, prefer 0-2 |
+| **No Side Effects** | Don't mutate inputs unexpectedly |
 
 ---
 
-## What NOT to Do
+## Code Structure
 
-### Never Add These Comments:
-- ❌ "This function returns..."
-- ❌ "We need to import..."
-- ❌ "Now let's create..."
-- ❌ "This is a React component..."
-- ❌ "Here we are handling..."
-- ❌ "Note that..."
-- ❌ "TODO: add error handling" (add it or don't mention it)
-
-### Never Add These Files:
-- ❌ `utils.ts` with one function
-- ❌ `constants.ts` with 3 values
-- ❌ `types.ts` for one interface
-- ❌ Separate `container/` and `components/` without reason
+| Pattern | Apply |
+|---------|-------|
+| **Guard Clauses** | Early returns for edge cases |
+| **Flat > Nested** | Avoid deep nesting (max 2 levels) |
+| **Composition** | Small functions composed together |
+| **Colocation** | Keep related code close |
 
 ---
 
-## Practical Examples
+## AI Coding Style
 
-### Example 1: API Handler
-**Verbose (BAD):**
-```typescript
-// Import the express framework for handling HTTP requests
-import express from 'express';
-
-// Create a new router instance
-const router = express.Router();
-
-/**
- * GET /api/users
- * Returns a list of all users in the database
- */
-router.get('/users', async (req, res) => {
-  try {
-    // Fetch all users from database
-    const users = await db.users.findMany();
-
-    // Return the users as JSON
-    res.json({ users });
-  } catch (error) {
-    // If there's an error, log it and return 500
-    console.error(error);
-    res.status(500).json({ error: 'Server error' });
-  }
-});
-```
-
-**Concise (GOOD):**
-```typescript
-import express from 'express';
-
-const router = express.Router();
-
-router.get('/users', async (req, res) => {
-  const users = await db.users.findMany();
-  res.json({ users });
-});
-```
-
-### Example 2: React Component
-**Verbose (BAD):**
-```tsx
-// This is a functional component that displays a user card
-// It takes a user object as a prop and renders the user's information
-interface UserCardProps {
-  user: User;
-}
-
-export const UserCard: React.FC<UserCardProps> = ({ user }) => {
-  // If there's no user, show a loading state
-  if (!user) {
-    return <div>Loading...</div>;
-  }
-
-  // Render the user card with name and email
-  return (
-    <div className="user-card">
-      <h2>{user.name}</h2>
-      <p>{user.email}</p>
-    </div>
-  );
-};
-```
-
-**Concise (GOOD):**
-```tsx
-export function UserCard({ user }: { user: User }) {
-  if (!user) return <div>Loading...</div>;
-
-  return (
-    <div className="user-card">
-      <h2>{user.name}</h2>
-      <p>{user.email}</p>
-    </div>
-  );
-}
-```
+| Situation | Action |
+|-----------|--------|
+| User asks for feature | Write it directly |
+| User reports bug | Fix it, don't explain |
+| No clear requirement | Ask, don't assume |
 
 ---
 
-## Quick Checklist Before Writing
+## Anti-Patterns (DON'T)
 
-Ask yourself:
-1. **Is this code necessary?** → If no, don't write it
-2. **Can this be simpler?** → Simplify it
-3. **Am I explaining obvious things?** → Delete the explanation
-4. **Is there a shorter way?** → Use it
-5. **Am I creating files for no reason?** → Put code inline
+| ❌ Pattern | ✅ Fix |
+|-----------|-------|
+| Comment every line | Delete obvious comments |
+| Helper for one-liner | Inline the code |
+| Factory for 2 objects | Direct instantiation |
+| utils.ts with 1 function | Put code where used |
+| "First we import..." | Just write code |
+| Deep nesting | Guard clauses |
+| Magic numbers | Named constants |
+| God functions | Split by responsibility |
 
 ---
 
-## Response Format
+## 🔴 Before Editing ANY File (THINK FIRST!)
 
-When asked to write code, respond like this:
+**Before changing a file, ask yourself:**
 
-```
-[Direct code block]
+| Question | Why |
+|----------|-----|
+| **What imports this file?** | They might break |
+| **What does this file import?** | Interface changes |
+| **What tests cover this?** | Tests might fail |
+| **Is this a shared component?** | Multiple places affected |
 
-[Brief explanation if needed, max 2 sentences]
+**Quick Check:**
+```
+File to edit: UserService.ts
+└── Who imports this? → UserController.ts, AuthController.ts
+└── Do they need changes too? → Check function signatures
 ```
 
-**NOT like this:**
-```
-[Step-by-step tutorial]
-[Multiple code blocks with explanations]
-[File-by-file breakdown]
-```
+> 🔴 **Rule:** Edit the file + all dependent files in the SAME task.
+> 🔴 **Never leave broken imports or missing updates.**
 
 ---
 
@@ -283,13 +113,89 @@ When asked to write code, respond like this:
 | Do | Don't |
 |----|-------|
 | Write code directly | Write tutorials |
-| Use concise syntax | Use verbose patterns |
 | Let code self-document | Add obvious comments |
 | Fix bugs immediately | Explain the fix first |
-| Return early | Deep nesting |
 | Inline small things | Create unnecessary files |
-| Use language idioms | Force patterns |
+| Name things clearly | Use abbreviations |
+| Keep functions small | Write 100+ line functions |
+
+> **Remember: The user wants working code, not a programming lesson.**
 
 ---
 
-**Remember: The user wants working code, not a programming lesson.**
+## 🔴 Self-Check Before Completing (MANDATORY)
+
+**Before saying "task complete", verify:**
+
+| Check | Question |
+|-------|----------|
+| ✅ **Goal met?** | Did I do exactly what user asked? |
+| ✅ **Files edited?** | Did I modify all necessary files? |
+| ✅ **Code works?** | Did I test/verify the change? |
+| ✅ **No errors?** | Lint and TypeScript pass? |
+| ✅ **Nothing forgotten?** | Any edge cases missed? |
+
+> 🔴 **Rule:** If ANY check fails, fix it before completing.
+
+---
+
+## Verification Scripts (MANDATORY)
+
+> 🔴 **CRITICAL:** Each agent runs ONLY their own skill's scripts after completing work.
+
+### Agent → Script Mapping
+
+| Agent | Script | Command |
+|-------|--------|---------|
+| **frontend-specialist** | UX Audit | `python ~/.claude/skills/frontend-design/scripts/ux_audit.py .` |
+| **frontend-specialist** | A11y Check | `python ~/.claude/skills/frontend-design/scripts/accessibility_checker.py .` |
+| **backend-specialist** | API Validator | `python ~/.claude/skills/api-patterns/scripts/api_validator.py .` |
+| **mobile-developer** | Mobile Audit | `python ~/.claude/skills/mobile-design/scripts/mobile_audit.py .` |
+| **database-architect** | Schema Validate | `python ~/.claude/skills/database-design/scripts/schema_validator.py .` |
+| **security-auditor** | Security Scan | `python ~/.claude/skills/vulnerability-scanner/scripts/security_scan.py .` |
+| **seo-specialist** | SEO Check | `python ~/.claude/skills/seo-fundamentals/scripts/seo_checker.py .` |
+| **seo-specialist** | GEO Check | `python ~/.claude/skills/geo-fundamentals/scripts/geo_checker.py .` |
+| **performance-optimizer** | Lighthouse | `python ~/.claude/skills/performance-profiling/scripts/lighthouse_audit.py <url>` |
+| **test-engineer** | Test Runner | `python ~/.claude/skills/testing-patterns/scripts/test_runner.py .` |
+| **test-engineer** | Playwright | `python ~/.claude/skills/webapp-testing/scripts/playwright_runner.py <url>` |
+| **Any agent** | Lint Check | `python ~/.claude/skills/lint-and-validate/scripts/lint_runner.py .` |
+| **Any agent** | Type Coverage | `python ~/.claude/skills/lint-and-validate/scripts/type_coverage.py .` |
+| **Any agent** | i18n Check | `python ~/.claude/skills/i18n-localization/scripts/i18n_checker.py .` |
+
+> ❌ **WRONG:** `test-engineer` running `ux_audit.py`
+> ✅ **CORRECT:** `frontend-specialist` running `ux_audit.py`
+
+---
+
+### 🔴 Script Output Handling (READ → SUMMARIZE → ASK)
+
+**When running a validation script, you MUST:**
+
+1. **Run the script** and capture ALL output
+2. **Parse the output** - identify errors, warnings, and passes
+3. **Summarize to user** in this format:
+
+```markdown
+## Script Results: [script_name.py]
+
+### ❌ Errors Found (X items)
+- [File:Line] Error description 1
+- [File:Line] Error description 2
+
+### ⚠️ Warnings (Y items)
+- [File:Line] Warning description
+
+### ✅ Passed (Z items)
+- Check 1 passed
+- Check 2 passed
+
+**Should I fix the X errors?**
+```
+
+4. **Wait for user confirmation** before fixing
+5. **After fixing** → Re-run script to confirm
+
+> 🔴 **VIOLATION:** Running script and ignoring output = FAILED task.
+> 🔴 **VIOLATION:** Auto-fixing without asking = Not allowed.
+> 🔴 **Rule:** Always READ output → SUMMARIZE → ASK → then fix.
+

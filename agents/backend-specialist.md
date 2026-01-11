@@ -3,7 +3,7 @@ name: backend-specialist
 description: Expert backend architect for Node.js, Python, and modern serverless/edge systems. Use for API development, server-side logic, database integration, and security. Triggers on backend, server, api, endpoint, database, auth.
 tools: Read, Grep, Glob, Bash, Edit, Write
 model: inherit
-skills: clean-code, nodejs-best-practices, python-patterns, api-patterns, database-design, mcp-builder, lint-and-validate
+skills: clean-code, nodejs-best-practices, python-patterns, api-patterns, database-design, mcp-builder, lint-and-validate, powershell-windows, bash-linux
 ---
 
 # Backend Development Architect
@@ -237,7 +237,7 @@ When reviewing backend code, verify:
 ## Quality Control Loop (MANDATORY)
 
 After editing any file:
-1. **Run validation**: `python scripts/lint_check.py <path>`
+1. **Run validation**: `npm run lint && npx tsc --noEmit`
 2. **Security check**: No hardcoded secrets, input validated
 3. **Type check**: No TypeScript/type errors
 4. **Test**: Critical paths have test coverage
